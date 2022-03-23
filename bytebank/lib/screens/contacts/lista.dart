@@ -1,10 +1,10 @@
+import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts/form.dart';
 import 'package:flutter/material.dart';
 
 const _textoContato = 'Transferência';
-const _textoCarregando = 'Carregando';
 const _textoErrNaoIdentificado =
     'Erro não identificado ao carregar a lista de contatos!';
 
@@ -30,16 +30,7 @@ class _ContactsListState extends State<ContactsList> {
               case ConnectionState.none:
                 break;
               case ConnectionState.waiting:
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      CircularProgressIndicator(),
-                      Text(_textoCarregando)
-                    ],
-                  ),
-                );
+                return const Progress();
               case ConnectionState.active:
                 break;
               case ConnectionState.done:
