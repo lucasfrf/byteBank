@@ -8,9 +8,15 @@ const _textoCarregando = 'Carregando';
 const _textoErrNaoIdentificado =
     'Erro não identificado ao carregar a lista de contatos!';
 
-class ContactsList extends StatelessWidget {
+class ContactsList extends StatefulWidget {
+  const ContactsList({Key? key}) : super(key: key);
+
+  @override
+  State<ContactsList> createState() => _ContactsListState();
+}
+
+class _ContactsListState extends State<ContactsList> {
   final ContactDao _dao = ContactDao();
-  ContactsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +53,17 @@ class ContactsList extends StatelessWidget {
                     itemCount: contacts.length,
                   );
                 }
-              //break;
+                break;
             }
             return const Text(_textoErrNaoIdentificado);
           })),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => ContactForm()));
+              .push(
+                MaterialPageRoute(builder: (context) => ContactForm()),
+              )
+              .then((value) => setState(() {}));
         },
         child: const Icon(Icons.add),
       ),
