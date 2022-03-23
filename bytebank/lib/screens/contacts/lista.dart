@@ -3,7 +3,7 @@ import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts/form.dart';
 import 'package:flutter/material.dart';
 
-const _textoContato = 'Contato';
+const _textoContato = 'Transferência';
 const _textoCarregando = 'Carregando';
 const _textoErrNaoIdentificado =
     'Erro não identificado ao carregar a lista de contatos!';
