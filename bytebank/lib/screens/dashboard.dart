@@ -3,7 +3,6 @@ import 'package:bytebank/screens/transferencia/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 const _tituloAppBar = 'Dashboard';
-const _textoContato = 'Contatos';
 const _textoTrasnferencia = 'Transferencia';
 const _textoTrasnferenciaFeed = 'Feed Transferencia';
 
