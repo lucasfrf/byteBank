@@ -6,6 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
+const String _baseUrl = '172.24.160.1:8080';
+const String _recursoTransacao = 'transactions';
+final Client client =
+    InterceptedClient.build(interceptors: [LoggingInterceptor()]);
+
 class LoggingInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
@@ -31,9 +36,8 @@ class LoggingInterceptor implements InterceptorContract {
 }
 
 Future<List<Transaction>>? findAll() async {
-  Client client = InterceptedClient.build(interceptors: [LoggingInterceptor()]);
   final Response response = await client
-      .get(Uri.http('172.24.160.1:8080', 'transactions'))
+      .get(Uri.http(_baseUrl, _recursoTransacao))
       .timeout(const Duration(seconds: 5));
   final List<dynamic> decodedJson = jsonDecode(response.body);
   final List<Transaction> transactions = [];
@@ -49,4 +53,32 @@ Future<List<Transaction>>? findAll() async {
     transactions.add(transaction);
   }
   return transactions;
+}
+
+Future<Transaction> save(Transaction transaction) async {
+  final Map<String, dynamic> transactionMap = {
+    'value': transaction.value,
+    'contact': {
+      'name': transaction.contact.name,
+      'accountNumber': transaction.contact.accountNumber,
+    }
+  };
+
+  final transactionJson = jsonEncode(transactionMap);
+
+  final Response response = await client.post(
+    Uri.http(_baseUrl, _recursoTransacao),
+    headers: {'Content-type': 'application/json', 'password': '1000'},
+    body: transactionJson,
+  );
+
+  Map<String, dynamic> json = jsonDecode(response.body);
+  final Map<String, dynamic> contactJson = json['contact'];
+  return Transaction(
+      json['value'],
+      Contact(
+        0,
+        contactJson['name'],
+        contactJson['accountNumber'],
+      ));
 }
